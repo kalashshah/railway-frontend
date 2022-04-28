@@ -67,8 +67,8 @@ const BookTicketForm = () => {
 				date_of_journey: `${trainDate.getDate()}-${
 					trainDate.getMonth() + 1
 				}-${trainDate.getFullYear()}`,
-				train: selectedTrainId,
-				route: selectedRouteId,
+				train: +selectedTrainId,
+				route: +selectedRouteId,
 			})
 			.then(() => {
 				console.log('ho gaya');

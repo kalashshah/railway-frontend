@@ -5,14 +5,16 @@ import {
 	Input,
 	InputGroup,
 	InputRightElement,
+	Link as UILink,
 	Text,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/AxiosInstance';
+import Header from './Header';
 
 const Login = () => {
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [show, setShow] = React.useState(false);
@@ -24,22 +26,19 @@ const Login = () => {
 		};
 		try {
 			const res = await axiosInstance.post('api/users/login/', data);
-      console.log(res);
+			console.log(res);
 			const token = res.data.token.access;
 			localStorage.setItem('token', token);
-      navigate("/");
+			navigate('/');
 		} catch (err) {
-      console.log(err);
-      alert('Invalid Credentials');
-    }
+			console.log(err);
+			alert('Invalid Credentials');
+		}
 	};
 
 	return (
-		<Box
-      pt="5%"
-			bg="rgba(255, 238, 204, 1)"
-      height="100vh"
-		>
+		<Box bg="rgba(255, 238, 204, 1)" height="100vh">
+			<Header />
 			<Text
 				fontSize="2rem"
 				fontWeight="bold"
@@ -75,6 +74,9 @@ const Login = () => {
 						</Button>
 					</InputRightElement>
 				</InputGroup>
+				<UILink mt="2%">
+					<Link to="/signup">Don't have an account? Sign up</Link>
+				</UILink>
 				<Button my="3%" size="lg" onClick={handleSubmit}>
 					Login
 				</Button>
