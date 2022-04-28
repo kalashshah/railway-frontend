@@ -1,8 +1,8 @@
 import { Flex, Link } from '@chakra-ui/react';
 import { Link as ReactLink } from 'react-router-dom';
 
-const navItems = ['Home', 'Login', 'Register', 'PNR Status', 'Contact Us'];
-const links = ['/', '/login', '/signup', '/pnr-status', '/contact-us'];
+const navItems = ['Home', 'Login', 'Register', 'My Tickets'];
+const links = ['/', '/login', '/signup', '/ticket'];
 
 const Header = () => {
 	return (

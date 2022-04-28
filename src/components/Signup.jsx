@@ -8,10 +8,12 @@ import {
 	InputGroup,
 	InputRightElement,
 	Text,
+	Link as UILink,
 } from '@chakra-ui/react';
 import bg from '../assets/images/signup.svg';
 import axiosInstance from '../services/AxiosInstance';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 const Signup = () => {
 	const navigation = useNavigate();
@@ -53,7 +55,8 @@ const Signup = () => {
 	};
 
 	return (
-		<Box bg="rgba(255, 238, 204, 1)">
+		<Box bg="rgba(255, 238, 204, 1)" pt="1%">
+			<Header />
 			<Text
 				fontSize="2rem"
 				fontWeight="bold"
@@ -164,6 +167,9 @@ const Signup = () => {
 						</Button>
 					</InputRightElement>
 				</InputGroup>
+				<UILink mt="2%">
+					<Link to="/login">Already have an account? Login</Link>
+				</UILink>
 				<Button my="3%" size="lg" onClick={handleSubmit}>
 					Signup
 				</Button>
