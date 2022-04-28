@@ -1,17 +1,20 @@
 import {
 	Box,
 	FormControl,
-	Image,
 	Input,
 	Flex,
 	Heading,
 	Select,
 	Button,
 } from '@chakra-ui/react';
-import formImg from '../../assets/images/home-form-arrows.png';
+import { useEffect } from 'react';
 import homeBg from '../../assets/images/home-bg.png';
 
 const BookTicketForm = () => {
+	let fetchedRoutes;
+	// useEffect(()=>{
+
+	// }, []);
 	return (
 		<Box
 			bg="url() no-repeat center center/cover"
@@ -21,33 +24,23 @@ const BookTicketForm = () => {
 			mt="0.8%"
 		>
 			<Flex direction="column" ml="4%">
-				<Heading my={('2%', '4%')} ml="4%">Book Ticket</Heading>
+				<Heading my={('2%', '4%')} ml="2%" fontSize="3rem">
+					Book Ticket
+				</Heading>
 				<FormControl>
-					<Flex>
-						<Flex direction="column" align="center" mr="5%">
-							<Input
-								borderRadius="15px"
-								boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
-								id="source"
-								type="text"
-								placeholder="Source"
-								variant="filled"
-							/>
-							<Image src={formImg} w="25px" h="35px" my="4%" />
-							<Input
-								boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
-								borderRadius="15px"
-								id="destination"
-								type="text"
-								placeholder="Destination"
-								variant="filled"
-							/>
-						</Flex>
-						<Flex
-							direction="column"
-							align="center"
-							justifyContent="space-between"
+					<Flex direction="column">
+						<Select
+							placeholder="Route"
+							variant="filled"
+							boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+							borderRadius="15px"
+							color="grey"
+							w="20%"
+							fontSize="1.4rem"
 						>
+							<option value="first-ac">First AC</option>
+						</Select>
+						<Flex align="center" mt="3%">
 							<Input
 								boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
 								borderRadius="15px"
@@ -55,6 +48,9 @@ const BookTicketForm = () => {
 								type="text"
 								placeholder="DD/MM/YY"
 								variant="filled"
+								w="15%"
+								fontSize="1.4rem"
+								mr="2%"
 							/>
 							<Select
 								placeholder="Class"
@@ -62,21 +58,38 @@ const BookTicketForm = () => {
 								boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
 								borderRadius="15px"
 								color="grey"
+								w="10%"
+								fontSize="1.4rem"
 							>
 								<option value="first-ac">First AC</option>
 								<option value="second-ac">Second AC</option>
 								<option value="third-ac">Third AC</option>
 							</Select>
 						</Flex>
+						<Select
+							placeholder="Select Train"
+							variant="filled"
+							boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+							borderRadius="15px"
+							color="grey"
+							w="20%"
+							fontSize="1.4rem"
+							mt="3%"
+							isDisabled={}
+						>
+							<option value="first-ac">First AC</option>
+						</Select>
 					</Flex>
 					<Button
 						mt="4%"
-						w="14.5%"
+						w="15%"
+						p="1.5% 1%"
 						type="submit"
 						boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
 						borderRadius="15px"
+						fontSize="1.4rem"
 					>
-						Submit
+						Book Now
 					</Button>
 				</FormControl>
 			</Flex>
