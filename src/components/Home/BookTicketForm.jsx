@@ -1,3 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../services/AxiosInstance';
 import {
 	Box,
 	FormControl,
@@ -7,14 +10,69 @@ import {
 	Select,
 	Button,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import homeBg from '../../assets/images/home-bg.png';
 
 const BookTicketForm = () => {
-	let fetchedRoutes;
-	// useEffect(()=>{
-
-	// }, []);
+	let navigate = useNavigate();
+	const [fetchedRoutes, setFetchedRoutes] = useState([]);
+	const [selectedRouteId, setSelectedRouteId] = useState('');
+	const [fetchedTrains, setFetchedTrains] = useState([]);
+	const [filteredTrains, setFilteredTrains] = useState(null);
+	const [selectedTrainId, setSelectedTrainId] = useState('');
+	const dateRef = useRef();
+	const classRef = useRef();
+	useEffect(() => {
+		axiosInstance.get('api/train/route/').then(({ data }) => {
+			setFetchedRoutes(
+				data.map((route) => ({
+					source: route.ostation,
+					destination: route.dstation,
+					id: route.id,
+				}))
+			);
+		});
+		axiosInstance.get('/api/train/trains/').then((res) => {
+			setFetchedTrains(res.data);
+		});
+	}, []);
+	useEffect(() => {
+		if (selectedRouteId) setFilteredTrains(null);
+		setFilteredTrains(() =>
+			fetchedTrains.filter((train) => {
+				return train.rid === +selectedRouteId;
+			})
+		);
+	}, [selectedRouteId]);
+	const handleRouteSelection = (e) => {
+		setSelectedRouteId(e.target.value);
+	};
+	const bookingHandler = () => {
+		const token = localStorage.getItem('token');
+		if (!token) {
+			return navigate('/login', { replace: true });
+		}
+		const trainDate = new Date(dateRef.current.value);
+		let trainClass = classRef.current.value;
+		if (trainClass === 'first-ac') {
+			trainClass = '1 AC';
+		} else if (trainClass === 'second-ac') {
+			trainClass = '2 AC';
+		} else {
+			trainClass = '3 AC';
+		}
+		axiosInstance
+			.post('/api/booking/book/', {
+				train_class: trainClass,
+				date_of_journey: `${trainDate.getDate()}-${
+					trainDate.getMonth() + 1
+				}-${trainDate.getFullYear()}`,
+				train: selectedTrainId,
+				route: selectedRouteId,
+			})
+			.then(() => {
+				console.log('ho gaya');
+			});
+	};
 	return (
 		<Box
 			bg="url() no-repeat center center/cover"
@@ -37,8 +95,17 @@ const BookTicketForm = () => {
 							color="grey"
 							w="20%"
 							fontSize="1.4rem"
+							onChange={handleRouteSelection}
 						>
-							<option value="first-ac">First AC</option>
+							{fetchedRoutes.map((route) => {
+								const routeName =
+									route.source + '-' + route.destination;
+								return (
+									<option key={routeName} value={route.id}>
+										{routeName}
+									</option>
+								);
+							})}
 						</Select>
 						<Flex align="center" mt="3%">
 							<Input
@@ -51,6 +118,7 @@ const BookTicketForm = () => {
 								w="15%"
 								fontSize="1.4rem"
 								mr="2%"
+								ref={dateRef}
 							/>
 							<Select
 								placeholder="Class"
@@ -60,6 +128,7 @@ const BookTicketForm = () => {
 								color="grey"
 								w="10%"
 								fontSize="1.4rem"
+								ref={classRef}
 							>
 								<option value="first-ac">First AC</option>
 								<option value="second-ac">Second AC</option>
@@ -75,9 +144,21 @@ const BookTicketForm = () => {
 							w="20%"
 							fontSize="1.4rem"
 							mt="3%"
-							// isDisabled={}
+							onChange={(e) => {
+								setSelectedTrainId(e.target.value);
+							}}
 						>
-							<option value="first-ac">First AC</option>
+							{filteredTrains?.map((trainDetail) => {
+								const trainName =
+									trainDetail.train_number +
+									'. ' +
+									trainDetail.train_name;
+								return (
+									<option key={trainDetail.id} value={trainDetail.id}>
+										{trainName}
+									</option>
+								);
+							})}
 						</Select>
 					</Flex>
 					<Button
@@ -88,6 +169,7 @@ const BookTicketForm = () => {
 						boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
 						borderRadius="15px"
 						fontSize="1.4rem"
+						onClick={bookingHandler}
 					>
 						Book Now
 					</Button>
