@@ -2,6 +2,7 @@ import { Flex, Link } from '@chakra-ui/react';
 import { Link as ReactLink } from 'react-router-dom';
 
 const navItems = ['Home', 'Login', 'Register', 'PNR Status', 'Contact Us'];
+const links = ['/', '/login', '/signup', '/pnr-status', '/contact-us'];
 
 const Header = () => {
 	return (
@@ -12,10 +13,10 @@ const Header = () => {
 			justify="flex-end"
 			align="center"
 		>
-			{navItems.map((label) => (
+			{navItems.map((label, index) => (
 				<Link
 					as={ReactLink}
-					to="/"
+					to={links[index]}
 					mx="2.5%"
 					fontWeight="500"
 					fontSize="20px"
