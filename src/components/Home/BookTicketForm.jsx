@@ -52,7 +52,7 @@ const BookTicketForm = () => {
 		if (!token) {
 			return navigate('/login', { replace: true });
 		}
-		const trainDate = new Date(dateRef.current.value);
+		const trainDate = dateRef.current.value;
 		let trainClass = classRef.current.value;
 		if (trainClass === 'first-ac') {
 			trainClass = '1 AC';
@@ -64,14 +64,14 @@ const BookTicketForm = () => {
 		axiosInstance
 			.post('/api/booking/book/', {
 				train_class: trainClass,
-				date_of_journey: `${trainDate.getDate()}-${
-					trainDate.getMonth() + 1
-				}-${trainDate.getFullYear()}`,
+				date_of_journey: trainDate,
 				train: +selectedTrainId,
 				route: +selectedRouteId,
+				account: 2,
 			})
 			.then(() => {
 				console.log('ho gaya');
+				navigate("/ticket");
 			});
 	};
 	return (
@@ -114,7 +114,7 @@ const BookTicketForm = () => {
 								borderRadius="15px"
 								id="date"
 								type="text"
-								placeholder="DD/MM/YY"
+								placeholder="YYYY-MM-DD"
 								variant="filled"
 								w="15%"
 								fontSize="1.4rem"

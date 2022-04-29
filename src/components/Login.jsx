@@ -74,8 +74,8 @@ const Login = () => {
 						</Button>
 					</InputRightElement>
 				</InputGroup>
-				<UILink mt="2%">
-					<Link to="/signup">Don't have an account? Sign up</Link>
+				<UILink mt="2%" as={Link} to="/signup">
+					Don't have an account? Sign up
 				</UILink>
 				<Button my="3%" size="lg" onClick={handleSubmit}>
 					Login

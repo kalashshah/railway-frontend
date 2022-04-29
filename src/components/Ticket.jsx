@@ -1,17 +1,23 @@
 import { Box, Divider, Spinner, Text } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/AxiosInstance';
 import React from 'react';
 import Header from './Header';
 
 const Ticket = () => {
+	const navigate = useNavigate();
 	const [data, setData] = React.useState(null);
 	React.useEffect(() => {
 		const getData = async () => {
-			const dt = await axiosInstance.get('/api/booking/passenger/');
-			setData(dt.data);
+			try {
+				const dt = await axiosInstance.get('/api/booking/passenger/');
+				setData(dt.data);
+			} catch (error) {
+				navigate('/login', { replace: true });
+			}
 		};
 		getData();
-	}, []);
+	}, [navigate]);
 
 	if (!data) {
 		return (
@@ -50,7 +56,7 @@ const Ticket = () => {
 						key={index}
 						display="flex"
 						flexDirection="column"
-						ml="30%"
+						pl="30%"
 						pb="2%"
 					>
 						<Text fontWeight="bold" fontSize="2rem">{`Ticket ${
